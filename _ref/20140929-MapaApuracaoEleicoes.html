@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Mapa Brasil Exemplo</title>
+		<script src="raphael-min.js"></script>
+		<script src="jquery.min.js"></script>
+
+		<!-- Desenha o mapa e inicializa o info -->
+		<script src="path.js"></script>
+		<script src="init.js"></script>
+
+		<!-- Monta os votos em forma cirular -->
+		<!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+		<script src="jquery.knob.js"></script>
+		<script src="http://www.r7.com/r7/media/2014/_assets/gs/TweenLite.min.js"></script>
+        <script src="http://www.r7.com/r7/media/2014/_assets/gs/plugins/CSSPlugin.min.js"></script>
+		<script>
+			$(function($) {
+
+                $(".knob").knob({
+                    change : function (value) {},
+                    release : function (value) {},
+                    cancel : function () {},
+                    draw : function () {}
+                });
+            });
+		</script>
+
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="mapaEleicoes.css">
+	</head>
+	<body>
+		<div id="containerInfo">
+			<div id="topo">
+				<h1>Eleições 2014: Apuração pelo Brasil</h1>
+			</div>
+			<div id="abas">
+				<ul>
+					<li class="selecionada" id="abaPres">Presidencial</li>
+					<li class="deselecionada" id="abaGov">Governador</li>
+					<li class="deselecionada" id="abaSen">Senador</li>
+					<li class="deselecionada" id="abaDepFed">Deputado Federal</li>
+					<li class="deselecionada" id="abaDepEst">Deputado Estadual</li>
+				</ul>
+			</div>
+			<div id="containerPrincipal">
+				<h1 class="acompanhe">Acompanhe a apuração estadual*</h1>
+				<h2>o conteúdo será atualizado em <span id="tempoAtualizar"> segundos</span> </h2>
+				<div class="clear"></div>
+				<!-- MARCAÇão DOS ESTADOS ACIMA DO MAPA -->
+				<div id="nomeEstados">
+					<div id="sp">SP</div>
+					<div id="mg">MG</div>
+					<div id="rj">RJ</div>
+					<div id="es">ES</div>
+					<div id="pr">PR</div>
+					<div id="sc">SC</div>
+					<div id="rs">RS</div>
+					<div id="go">GO</div>
+					<div id="df">DF</div>
+					<div id="mt">MT</div>
+					<div id="ms">MS</div>
+					<div id="ac">AC</div>
+					<div id="ro">RO</div>
+					<div id="am">AM</div>
+					<div id="rr">RR</div>
+					<div id="pa">PA</div>
+					<div id="ap">AP</div>
+					<div id="to">TO</div>
+					<div id="ma">MA</div>
+					<div id="pi">PI</div>
+					<div id="ce">CE</div>
+					<div id="rn">RN</div>
+					<div id="pb">PB</div>
+					<div id="pe">PE</div>
+					<div id="al">AL</div>
+					<div id="se">SE</div>
+					<div id="ba">BA</div>
+				</div>
+                
+                <!-- TOOLTIP -->
+				<div id="tooltip">
+					<h1></h1>
+					<div class="urnasApuradas"></div>
+					<div class="candidatoApuracao">
+						<div class="bolinhaApuracaoEstadual" id="bolinhaApuracao1"></div>
+						<div class="candidatoApuracaoEstadual"></div>
+						<div class="quantdadeVotosApuracaoEstadual"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="candidatoApuracao">
+						<div class="bolinhaApuracaoEstadual PT"  id="bolinhaApuracao2"></div>
+						<div class="candidatoApuracaoEstadual"></div>
+						<div class="quantdadeVotosApuracaoEstadual"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="candidatoApuracao">
+						<div class="bolinhaApuracaoEstadual" id="bolinhaApuracao3"></div>
+						<div class="candidatoApuracaoEstadual"></div>
+						<div class="quantdadeVotosApuracaoEstadual"></div>
+					</div>
+				</div>
+                <div id="conteinerSeta">
+                    <div id="setaBaixo" class="setaEsquerda"></div>
+                </div>
+				<!-- FINAL TOOLTIP -->
+
+				<div id="mapPresidente" class="mapa"></div>
+
+				<div id="presidente" class="candidatos">
+					<div class="candidato">
+						<li class="fotoCandidato">
+							<div class="percentCandidato">
+								<input id="percentCandidato1" data-angleOffset="180" class="knob" data-width="75"  data-bgColor="#d7d7d7" data-displayInput="false" data-thickness=".3" readonly value="0">
+							</div>
+							<div class="fotoCandidatoContainer" id="fotoCandidato1"></div>
+						</li>
+						<li class="pontuacaoCandidato">
+							<h1 class="nomeCandidato" id="nomeCandidato1"></h1>
+							<div class="clear"></div>
+							<div class="resultadoApuracao" id="pontosCandidato1"></div>
+							<div class="totalApuracao" id="apuracaoCandidato1"></div>
+							<div class="eleito" id="eleito1">2º Turno</div>
+						</li>
+					</div>
+					
+					<div class="candidato">
+						<li class="fotoCandidato">
+							<div class="percentCandidato">
+								<input id="percentCandidato2" data-angleOffset="180" class="knob" data-width="72" data-fgColor="#3780bf" data-bgColor="#d7d7d7" data-displayInput="false" data-thickness=".3" readonly value="0">
+							</div>
+							<div class="fotoCandidatoContainer"  id="fotoCandidato2"></div>
+						</li>
+						<li class="pontuacaoCandidato">
+							<h1 class="nomeCandidato" id="nomeCandidato2"></h1>
+							<div class="clear"></div>
+							<div class="resultadoApuracao" id="pontosCandidato2"></div>
+							<div class="totalApuracao" id="apuracaoCandidato2"></div>
+							<div class="eleito" id="eleito2">2º Turno</div>
+						</li>
+					</div>
+
+					<div class="candidato">
+						<li class="fotoCandidato">
+							<div class="percentCandidato">
+								<input id="percentCandidato3" data-angleOffset="180" class="knob" data-width="72" data-fgColor="#ffc700" data-bgColor="#d7d7d7" data-displayInput="false" data-thickness=".3" readonly value="0">
+							</div>
+							<div class="fotoCandidatoContainer" id="fotoCandidato3"></div>
+						</li>
+						<li class="pontuacaoCandidato">
+							<h1 class="nomeCandidato"  id="nomeCandidato3"></h1>
+							<div class="clear"></div>
+							<div class="resultadoApuracao" id="pontosCandidato3"></div>
+							<div class="totalApuracao" id="apuracaoCandidato3"></div>
+							<div class="eleito" id="eleito3"></div>
+						</li>
+					</div>
+					<a href="http://noticias.r7.com/eleicoes-2014/apuracao-completa" target="_blank" id="apuracao">clique aqui para ver<br>a Apuração completa</a>
+				</div>
+
+				<div id="outrosCandidatos" class="candidatos">
+					<img src="assets/pointerMouse.jpg" alt="">
+					<a href="http://noticias.r7.com/eleicoes-2014/apuracao-completa" target="_blank" id="apuracao2">clique aqui para ver<br>a Apuração completa</a>
+				</div>
+
+				<div class="clear"></div>
+				<div class="nota">*Este infográfico só exibe os 3 candidatos mais bem colocados</div>
+				<div class="rodape">Fonte:TSE</div>
+			</div>
+			
+		</div>
+		<script src="mapaEleicoes.js"></script>
+		<script>
+	    	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	        })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+
+	          ga('create', 'UA-53772514-1', 'auto');
+	          ga('send', 'pageview');
+	    </script>
+	</body>
+</html>
